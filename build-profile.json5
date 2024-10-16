@@ -36,6 +36,22 @@
           ]
         }
       ]
+    },
+    {
+      "name": "recommend",
+      "srcPath": "./features/recommend",
+    },
+    {
+      "name": "find",
+      "srcPath": "./features/find",
+    },
+    {
+      "name": "moments",
+      "srcPath": "./features/moments",
+    },
+    {
+      "name": "mine",
+      "srcPath": "./features/mine",
     }
   ]
 }
