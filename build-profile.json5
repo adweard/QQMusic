@@ -27,7 +27,7 @@
   "modules": [
     {
       "name": "entry",
-      "srcPath": "./entry",
+      "srcPath": "./products/entry",
       "targets": [
         {
           "name": "default",
@@ -52,6 +52,10 @@
     {
       "name": "mine",
       "srcPath": "./features/mine",
+    },
+    {
+      "name": "radar",
+      "srcPath": "./features/radar",
     }
   ]
 }

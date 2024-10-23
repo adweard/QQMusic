@@ -1,0 +1,16 @@
+{
+  "name": "entry",
+  "version": "1.0.0",
+  "description": "Please describe the basic information.",
+  "main": "",
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "find": "file:../../features/find",
+    "mine": "file:../../features/mine",
+    "moments": "file:../../features/moments",
+    "radar": "file:../../features/radar",
+    "recommend": "file:../../features/recommend",
+  }
+}
+

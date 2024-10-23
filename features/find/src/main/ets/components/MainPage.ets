@@ -1,5 +1,5 @@
 @Component
-export struct MainPage {
+export struct FindPage {
   @State message: string = 'Hello World';
 
   build() {
@@ -12,5 +12,6 @@ export struct MainPage {
       .width('100%')
     }
     .height('100%')
+    .backgroundColor(Color.White)
   }
 }

@@ -1,6 +1,6 @@
 @Component
-export struct MainPage {
-  @State message: string = 'Hello World';
+export struct MomentsPage {
+  @State message: string = '时刻页面';
 
   build() {
     Row() {

@@ -1,1 +1,1 @@
-export { MainPage } from './src/main/ets/components/MainPage'
+export { MomentsPage } from './src/main/ets/components/MainPage'
