@@ -56,6 +56,8 @@ export struct suggestListView {
                     .width('76%')
 
                   }.width(360)
+
+                  .clip(true)
                 }
               })
             }

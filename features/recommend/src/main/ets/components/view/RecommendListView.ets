@@ -52,8 +52,9 @@ export struct RecommendListView {
           }
           .justifyContent(FlexAlign.SpaceBetween)
           .size({ height: 200, width: 150 })
-          .borderRadius(10)
           .clip(true)
+          .borderRadius(10)
+
           .backgroundImage($r(obj.img))
           .backgroundImageSize({ height: 200, width: 150 })
 
