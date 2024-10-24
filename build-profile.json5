@@ -56,6 +56,14 @@
     {
       "name": "radar",
       "srcPath": "./features/radar",
+    },
+    {
+      "name": "musicPlayer",
+      "srcPath": "./features/musicPlayer",
+    },
+    {
+      "name": "musicList",
+      "srcPath": "./features/musicList",
     }
   ]
 }
