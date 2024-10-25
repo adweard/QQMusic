@@ -19,7 +19,7 @@ export struct RecommendPage {
   @Provide suggestInfo: string = this.suggestInfoList[0]
   @Provide suggestMusicList: musicInfoModel[][] = []
   @State color: string = ''
-
+  
   build() {
     Column() {
       //顶部栏位组件

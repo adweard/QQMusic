@@ -1,9 +1,11 @@
 import { playListModel, playListModelList } from "../viewModel/playListModel"
 import getAverageColor from "../utils/getColorPicker"
 
+
 @Component
 export struct recentlyListenedList {
   @State playListArray: playListModel[] = []
+  @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
 
   aboutToAppear(): void {
     playListModelList.forEach(val => {
@@ -63,7 +65,10 @@ export struct recentlyListenedList {
             .borderRadius(10)
             .justifyContent(FlexAlign.Start)
 
-          }
+          }.onClick(() => {
+            this.pageIndexInfos.pushPathByName('musicList', val)
+            console.log('测试推进长汀')
+          })
         })
       }.listDirection(Axis.Horizontal)
       .scrollBar(BarState.Off)

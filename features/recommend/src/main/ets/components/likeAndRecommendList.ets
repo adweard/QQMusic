@@ -48,7 +48,7 @@ export struct likeAndRecommendList {
                         }.justifyContent(FlexAlign.Start)
                       }.alignItems(HorizontalAlign.Start)
 
-                      Image($r('app.media.play'))
+                      Image($r("app.media.listplay"))
                         .size({ width: 15, height: 15 })
                     }.justifyContent(FlexAlign.SpaceBetween)
                     .width('76%')

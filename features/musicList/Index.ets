@@ -1,1 +1,1 @@
-export { MainPage } from './src/main/ets/components/MainPage'
+export { MusicListPage } from './src/main/ets/view/MusiListPage'
