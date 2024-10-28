@@ -27,14 +27,16 @@ export struct MusicListPage {
               musicList()
             }
           }
+
         }.scrollBar(BarState.Off)
         .sticky(StickyStyle.Header)
+        .edgeEffect(EdgeEffect.None)
       }
     }
     .width('100%')
     .backgroundColor('#ff530606')
     .height('100%')
-    .margin({ bottom: Number(AppStorage.get('bottomHeight')) })
+    .padding({ bottom: Number(AppStorage.get('bottomHeight')) })
   }
 
   @Builder

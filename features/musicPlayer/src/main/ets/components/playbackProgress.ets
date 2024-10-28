@@ -1,0 +1,67 @@
+import { media } from '@kit.MediaKit';
+
+@Component
+export struct playbackProgress {
+  private player: media.AVPlayer = AppStorage.get("player") as media.AVPlayer
+  @State musicDuration: number = 0
+  @State musicUpdateTime: number = 0
+  @State updateTime: string = '00:00'
+  @State durationTime: string = '00:00'
+
+  aboutToAppear(): void {
+    setTimeout(() => {
+    }, 2000)
+    this.player.on('durationUpdate', (val => {
+      this.musicDuration = val
+      this.durationTime = this.getTime(val)
+    }))
+    this.player.on('timeUpdate', (val) => {
+      this.musicUpdateTime = val
+      this.updateTime = this.getTime(val)
+    })
+
+  }
+
+  build() {
+    Column() {
+      Slider({ max: this.musicDuration, style: SliderStyle.NONE, value: $$this.musicUpdateTime })
+        .selectedColor('#ffff')
+        .onChange(val => {
+          this.player.seek(val, media.SeekMode.SEEK_CLOSEST)
+
+        })
+        .width('100%')
+      Row() {
+        Text(this.updateTime)
+          .fontSize(10)
+          .fontColor('#ffff')
+        Text(this.durationTime)
+          .fontSize(10)
+          .fontColor('#ffff')
+
+      }.justifyContent(FlexAlign.SpaceBetween)
+      .width('100%')
+
+    }.width('90%')
+  }
+
+  getTime(seconds: number): string {
+    const hours = Math.floor(seconds / 3600000);
+    const minutes = Math.floor((seconds % 3600000) / 60000);
+    const sec = (seconds % 60000) / 1000;
+    // 将小时、分钟和秒转换为两位数格式
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = minutes.toString().padStart(2, '0');
+    let formattedSeconds = '00'
+    if (sec < 10) {
+      formattedSeconds = '0' + sec.toString().split('.')[0]
+    } else {
+      formattedSeconds = sec.toString().padStart(2, '0');
+      formattedSeconds = formattedSeconds.split('.')[0]
+    }
+    if (formattedHours == '00') {
+      return `${formattedMinutes}:${formattedSeconds}`
+    }
+    return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+}

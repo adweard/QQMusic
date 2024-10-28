@@ -11,7 +11,8 @@
     "moments": "file:../../features/moments",
     "radar": "file:../../features/radar",
     "recommend": "file:../../features/recommend",
-    "musiclist": "file:../../features/musicList"
+    "musiclist": "file:../../features/musicList",
+    "musicplayer": "file:../../features/musicPlayer"
   }
 }
 

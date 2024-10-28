@@ -6,6 +6,7 @@ import { MinePage } from 'mine'
 import { window } from '@kit.ArkUI'
 import { WindowManager } from '@kit.SpeechKit'
 import { MusicListPage } from 'musiclist'
+import { MusicPlayerPage } from 'musicplayer'
 
 
 @Entry
@@ -28,6 +29,10 @@ struct Index {
         MusicListPage()
       }.hideTitleBar(true)
     }
+    if (name === 'musicPlayer')
+    NavDestination() {
+      MusicPlayerPage()
+    }.hideTitleBar(true)
 
   }
 

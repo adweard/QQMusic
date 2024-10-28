@@ -1,5 +1,6 @@
 import { playListModel } from "recommend"
 
+
 @Component
 export struct listControllerButtons {
   @Consume playList: playListModel
@@ -13,6 +14,9 @@ export struct listControllerButtons {
         }.size({ width: 40, height: 40 })
         .backgroundColor(Color.Transparent)
         .fontWeight(FontWeight.Medium)
+        .onClick(() => {
+
+        })
 
 
         Blank()
@@ -46,7 +50,7 @@ export struct listControllerButtons {
 
         Blank()
           .width(24)
-        Image($r('app.media.forward'))
+        Image($r("app.media.forward_player"))
           .size({ width: 22, height: 22 })
 
 

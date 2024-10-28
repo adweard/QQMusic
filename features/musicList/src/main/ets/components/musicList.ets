@@ -1,9 +1,11 @@
+import { musicPlayer } from "musicplayer/src/main/ets/utils/MusicPlayerUtil"
 import { playListModel } from "recommend"
 import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
 
 @Component
 export struct musicList {
   @Consume playList: playListModel
+  @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
 
   build() {
     List({ space: 12 }) {
@@ -17,16 +19,19 @@ export struct musicList {
               Text(val.Info.name)
                 .fontSize(15)
               Row({ space: 5 }) {
+                //音乐标签(VIP\SQ\...)
                 Text(val.Info.info)
                   .fontColor('#ffff0000')
                   .border({ width: 1, color: '#ffff0000', radius: 2 })
                   .fontSize(10)
+                //歌手信息
                 Text(val.Info.singer)
                   .fontColor('#ff2d2d2d')
                   .fontSize(10)
               }
             }.alignItems(HorizontalAlign.Start)
 
+            //每首歌的更多按钮
             Button() {
               Image($r('app.media.music_more'))
             }.backgroundColor(Color.Transparent)
@@ -34,9 +39,24 @@ export struct musicList {
             .size({ width: 10, height: 10 })
           }.width('95%')
           .alignItems(VerticalAlign.Center)
+          .onClick(() => {
+            this.pageIndexInfos.pushPathByName('musicPlayer', val)
+            musicPlayer.setLoop(true)
+            //TODO 控制播放循环与否的对象
+            AppStorage.setOrCreate("musicPlayer", musicPlayer)
+            musicPlayer.playByRawSrc(val.musicRawFile).then((player) => {
+              //TODO 控制播放状态机的对象
+              AppStorage.setOrCreate("player", player)
+            })
+            console.log("测试音频自动播放" + val.musicRawFile)
+          })
 
         }
       })
     }.backgroundColor('#ffff')
+    .padding({ bottom: 120 })
+    .constraintSize({
+      minHeight: 450
+    })
   }
 }
