@@ -9,8 +9,7 @@ export struct playbackProgress {
   @State durationTime: string = '00:00'
 
   aboutToAppear(): void {
-    setTimeout(() => {
-    }, 2000)
+
     this.player.on('durationUpdate', (val => {
       this.musicDuration = val
       this.durationTime = this.getTime(val)

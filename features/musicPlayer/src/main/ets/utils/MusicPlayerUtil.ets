@@ -1,8 +1,10 @@
 import { media } from '@kit.MediaKit';
+import { playListModel } from "recommend"
 
 class MusicPlayer {
   private avPlayer: media.AVPlayer | null = null
   private loop: boolean = false
+  public isPlaying: boolean = false
 
   async getAVPlayerInstance() {
     // 如果已存在，直接返回
@@ -21,6 +23,8 @@ class MusicPlayer {
           break;
         case 'playing':
           player.play()
+          this.isPlaying = true
+          AppStorage.setOrCreate('isPlaying', this.isPlaying)
           break;
         case 'paused':
           player.pause()
@@ -69,6 +73,38 @@ class MusicPlayer {
   // 设置循环播放
   async setLoop(isLoop: boolean) {
     this.loop = isLoop
+  }
+
+  playNext() {
+    let playList: playListModel = AppStorage.get('playList') as playListModel
+    let playIndex: number = AppStorage.get('playIndex') as number
+    if (playIndex == playList.musicList.length - 1) {
+      console.log('状态机进入播放下一首 最后一首')
+      this.playByRawSrc(playList.musicList[0].musicRawFile)
+      AppStorage.setOrCreate('playIndex', 0)
+      AppStorage.setOrCreate('playMusic', playList.musicList[0])
+    } else {
+      console.log('状态机进入播放下一首 非最后一首')
+      this.playByRawSrc(playList.musicList[playIndex+1].musicRawFile)
+      AppStorage.setOrCreate('playIndex', playIndex + 1)
+      AppStorage.setOrCreate('playMusic', playList.musicList[playIndex + 1])
+    }
+  }
+
+  playBefore() {
+    let playlist: playListModel = AppStorage.get('playList') as playListModel
+    let playIndex: number = AppStorage.get('playIndex') as number
+    if (playIndex == 0) {
+      this.playByRawSrc(playlist.musicList[playlist.musicList.length-1].musicRawFile)
+      AppStorage.setOrCreate('playMusic', playlist.musicList[playlist.musicList.length-1])
+      AppStorage.setOrCreate('playIndex', playlist.musicList.length - 1)
+
+    } else {
+      this.playByRawSrc(playlist.musicList[playIndex-1].musicRawFile)
+      AppStorage.setOrCreate('playMusic', playlist.musicList[playIndex - 1])
+      AppStorage.setOrCreate('playIndex', playIndex - 1)
+
+    }
   }
 }
 

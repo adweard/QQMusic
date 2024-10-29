@@ -10,6 +10,18 @@ export struct MusicListPage {
   @State param: playListModel[] = this.pageIndexInfos.getParamByName('musicList') as playListModel[]
   @Provide playList: playListModel = this.param[0]
 
+  aboutToAppear(): void {
+    //
+    if (!this.param[0].imgName) {
+      setTimeout(() => {
+      }, 2000)
+      AppStorage.setOrCreate('playList', this.playList)
+    } else {
+      AppStorage.setOrCreate('playList', this.playList)
+    }
+
+  }
+
   build() {
     Column() {
       Column() {

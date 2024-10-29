@@ -7,7 +7,6 @@ import { musicInfoPage } from "../components/MusicInfoPage";
 @Component
 export struct MusicPlayerPage {
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
-  @State message: string = 'Hello World';
   @State param: musicModel[] = this.pageIndexInfos.getParamByName('musicPlayer') as musicModel[]
   @Provide musicInfo: musicModel = this.param[0]
 

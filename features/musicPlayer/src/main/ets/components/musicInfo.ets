@@ -1,8 +1,11 @@
+import { playListModel } from "recommend"
 import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
 
 @Component
 export struct musicInfo {
   @Consume musicInfo: musicModel
+  @StorageLink('playIndex') @Watch('playIndexChange') playIndex: number = AppStorage.get('playIndex') as number
+  private playList: playListModel = AppStorage.get('playList') as playListModel
 
   build() {
     Row() {
@@ -49,6 +52,12 @@ export struct musicInfo {
       }
     }.width('90%')
     .justifyContent(FlexAlign.SpaceBetween)
+
+  }
+
+  playIndexChange() {
+    this.musicInfo = (AppStorage.get('playList') as playListModel).musicList[AppStorage.get('playIndex') as number]
+
 
   }
 }

@@ -1,7 +1,11 @@
+import { playListModel } from "recommend"
+import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
+
 @Component
 export struct musicCoverImg {
-  @Consume musicImg: string
+  @State musicImg: string = (AppStorage.get('playMusic') as musicModel).Info.img
   @State angel: number = 0
+  @StorageLink('playIndex') @Watch('playIndexChange') playIndex: number = AppStorage.get('playIndex') as number
 
   aboutToAppear(): void {
     animateTo({
@@ -23,5 +27,10 @@ export struct musicCoverImg {
       .rotate({
         angle: this.angel
       })
+  }
+
+  playIndexChange() {
+    this.musicImg =
+      (AppStorage.get('playList') as playListModel).musicList[AppStorage.get('playIndex') as number].Info.img
   }
 }
