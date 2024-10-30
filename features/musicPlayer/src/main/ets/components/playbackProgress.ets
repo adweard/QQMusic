@@ -24,6 +24,10 @@ export struct playbackProgress {
 
           this.musicDuration = this.player.duration
           this.durationTime = this.getTime(this.player.duration)
+          this.player.on('durationUpdate', (val) => {
+            this.musicDuration = val
+            this.durationTime = this.getTime(val)
+          })
           this.player.on('timeUpdate', (val) => {
             this.musicUpdateTime = val
             this.updateTime = this.getTime(val)

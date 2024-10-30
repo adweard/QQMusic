@@ -1,3 +1,4 @@
+import { mainPagePlayer } from "musicplayer";
 import { playListModel } from "recommend";
 import { Header } from "../components/Header";
 import { listControllerButtons } from "../components/listControllerButtons";
@@ -11,7 +12,6 @@ export struct MusicListPage {
   @Provide playList: playListModel = this.param[0]
 
   aboutToAppear(): void {
-    //
     if (!this.param[0].imgName) {
       setTimeout(() => {
       }, 2000)
@@ -23,7 +23,7 @@ export struct MusicListPage {
   }
 
   build() {
-    Column() {
+    Stack() {
       Column() {
         Header()
         List() {
@@ -44,6 +44,16 @@ export struct MusicListPage {
         .sticky(StickyStyle.Header)
         .edgeEffect(EdgeEffect.None)
       }
+
+      //播放控件
+      Column() {
+        mainPagePlayer()
+        Blank()
+          .width('100%')
+          .height(20)
+          .backgroundColor('#FCFDFF')
+      }
+      .position({ y: '95%' })
     }
     .width('100%')
     .backgroundColor('#ff530606')

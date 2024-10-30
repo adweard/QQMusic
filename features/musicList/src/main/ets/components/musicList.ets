@@ -59,7 +59,7 @@ export struct musicList {
         }
       })
     }.backgroundColor('#ffff')
-    .padding({ bottom: 120 })
+    .padding({ bottom: 170 })
     .constraintSize({
       minHeight: 450
     })

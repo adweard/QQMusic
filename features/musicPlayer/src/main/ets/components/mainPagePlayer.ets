@@ -51,13 +51,7 @@ export struct mainPagePlayer {
 
     }
 
-    animateTo({
-      duration: 2000,
-      iterations: -1,
-      curve: Curve.Linear
-    }, () => {
-      this.angel = 360
-    })
+
   }
 
   build() {
@@ -88,6 +82,15 @@ export struct mainPagePlayer {
         .width(10)
       //播放上一首
       Image($r('app.media.changeMusic_player'))
+        .onAppear(() => {
+          animateTo({
+            duration: 20000,
+            iterations: -1,
+            curve: Curve.Linear
+          }, () => {
+            this.angel = 360
+          })
+        })
         .size({ width: 20, height: 20 })
         .onClick(() => {
           musicPlayer.playBefore()
