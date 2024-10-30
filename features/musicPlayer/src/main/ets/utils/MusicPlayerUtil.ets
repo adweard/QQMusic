@@ -28,6 +28,8 @@ class MusicPlayer {
           break;
         case 'paused':
           player.pause()
+          this.isPlaying = false
+          AppStorage.setOrCreate('isPlaying', this.isPlaying)
           break;
         case 'completed':
           if (this.loop === true) {

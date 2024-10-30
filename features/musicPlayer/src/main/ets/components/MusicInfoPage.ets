@@ -7,7 +7,7 @@ import { playerControllerButton } from "./playerControllerButtons"
 
 @Component
 export struct musicInfoPage {
-  @State  musicInfo: musicModel = AppStorage.get('playMusic') as musicModel
+  @State musicInfo: musicModel = AppStorage.get('playMusic') as musicModel
   @Provide musicImg: string = this.musicInfo.Info.img
 
   build() {
@@ -26,6 +26,4 @@ export struct musicInfoPage {
       playerControllerButton()
     }.alignItems(HorizontalAlign.Center)
   }
-
-
 }

@@ -8,13 +8,6 @@ export struct playerControllerButton {
   private player: media.AVPlayer = AppStorage.get("player") as media.AVPlayer
   @StorageLink('isPlaying') @Watch('playStateChange') isPlaying: boolean = AppStorage.get('isPlaying') as boolean
 
-  // aboutToAppear(): void {
-  //   this.player.on('stateChange', state => {
-  //     if (state == 'playing') {
-  //       this.isPlaying = true
-  //     }
-  //   })
-  // }
 
   build() {
     Row({ space: 60 }) {

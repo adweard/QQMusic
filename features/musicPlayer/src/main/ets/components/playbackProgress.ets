@@ -9,15 +9,7 @@ export struct playbackProgress {
   @State durationTime: string = '00:00'
 
   aboutToAppear(): void {
-
-    this.player.on('durationUpdate', (val => {
-      this.musicDuration = val
-      this.durationTime = this.getTime(val)
-    }))
-    this.player.on('timeUpdate', (val) => {
-      this.musicUpdateTime = val
-      this.updateTime = this.getTime(val)
-    })
+    console.log('获取对象' + this.player.duration)
 
   }
 
@@ -27,7 +19,15 @@ export struct playbackProgress {
         .selectedColor('#ffff')
         .onChange(val => {
           this.player.seek(val, media.SeekMode.SEEK_CLOSEST)
+        })
+        .onAppear(() => {
 
+          this.musicDuration = this.player.duration
+          this.durationTime = this.getTime(this.player.duration)
+          this.player.on('timeUpdate', (val) => {
+            this.musicUpdateTime = val
+            this.updateTime = this.getTime(val)
+          })
         })
         .width('100%')
       Row() {
