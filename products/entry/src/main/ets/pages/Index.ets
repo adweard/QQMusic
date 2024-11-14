@@ -3,7 +3,7 @@ import { RecommendPage } from 'recommend'
 import { RadarPage } from 'radar'
 import { MomentsPage } from 'moments'
 import { MinePage } from 'mine'
-import {mainPagePlayer} from 'musicplayer'
+import { mainPagePlayer } from 'musicplayer'
 import { MusicListPage } from 'musiclist'
 import { MusicPlayerPage } from 'musicplayer'
 
@@ -18,7 +18,15 @@ struct Index {
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
 
   aboutToAppear(): void {
-
+    if (AppStorage.get('seek') as number | undefined != undefined) {
+      console.log('获取seek' + (AppStorage.get('seek') as number).toString())
+    }
+    if (AppStorage.get('playListIndex') as number | undefined != undefined) {
+      console.log('获取playListIndex' + (AppStorage.get('playListIndex') as number).toString())
+    }
+    if (AppStorage.get('playIndex') as number | undefined != undefined) {
+      console.log('获取playIndex' + (AppStorage.get('playIndex') as number).toString())
+    }
   }
 
   @Builder
@@ -96,7 +104,7 @@ struct Index {
         .animationDuration(1)
 
         mainPagePlayer()
-        .position({ y: '83.89%' })
+          .position({ y: '83.89%' })
       }
     } //设置导航栏样式
     // .mode(NavigationMode.Stack)

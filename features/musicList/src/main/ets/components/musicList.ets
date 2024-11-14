@@ -56,7 +56,9 @@ export struct musicList {
 
           })
 
-        }
+        }.onClick(() => {
+          AppStorage.setOrCreate('playList', this.playList)
+        })
       })
     }.backgroundColor('#ffff')
     .padding({ bottom: 170 })

@@ -67,7 +67,6 @@ export struct recentlyListenedList {
 
           }.onClick(() => {
             this.pageIndexInfos.pushPathByName('musicList', val)
-            console.log('测试推进长汀')
           })
         })
       }.listDirection(Axis.Horizontal)

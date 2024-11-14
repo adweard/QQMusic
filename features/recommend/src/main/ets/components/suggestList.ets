@@ -1,5 +1,4 @@
 import { musicInfoModel, suggestMusicList } from '../viewModel/musicInfoModel'
-import { getRandomInt } from '../utils/getRandomInt'
 import { orderList } from '../utils/orderList'
 
 @Component
@@ -56,7 +55,6 @@ export struct suggestList {
                     .width('76%')
 
                   }.width(360)
-
                   .clip(true)
                 }
               })

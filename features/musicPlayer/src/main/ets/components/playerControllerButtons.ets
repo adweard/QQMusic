@@ -1,7 +1,5 @@
 import { media } from "@kit.MediaKit";
 import { musicPlayer } from '../utils/MusicPlayerUtil'
-import { musicCoverImg } from "./musicCoverImg";
-import { musicInfo } from "./musicInfo";
 
 @Component
 export struct playerControllerButton {
@@ -29,7 +27,6 @@ export struct playerControllerButton {
             this.player.play()
 
           }
-          // musicCoverImg().change()
         })
       //下一首
       Image($r('app.media.changeMusic_player'))
@@ -40,7 +37,6 @@ export struct playerControllerButton {
         })
     }.justifyContent(FlexAlign.Center)
     .width('90%')
-
   }
 
   playStateChange() {

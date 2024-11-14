@@ -19,7 +19,7 @@ export struct RecommendPage {
   @Provide suggestInfo: string = this.suggestInfoList[0]
   @Provide suggestMusicList: musicInfoModel[][] = []
   @State color: string = ''
-  
+
   build() {
     Column() {
       //顶部栏位组件
@@ -72,23 +72,18 @@ export struct RecommendPage {
           this.suggestInfo = this.suggestInfoList[index]
         }
         for (let i = 0; i < suggestMusicList.length / 3 + 1; i++) {
-          // this.likeAndRecommendMusicList[i] = []
           this.suggestMusicList[i] = []
           for (let t = 0; t < 3; t++) {
-            // this.likeAndRecommendMusicList[i][t] = likeAndRecommendMusicList[i * 3+t]
             this.suggestMusicList[i][t] = suggestMusicList[index][i * 3 +t]
-
           }
         }
 
         setTimeout(() => {
           this.isRefreshing = false
         }, 1000)
-
       })
-    }
+    }.margin({ bottom: '10%' })
     .backgroundColor('#F8F9FD')
-
   }
 }
 

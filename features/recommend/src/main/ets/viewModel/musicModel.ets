@@ -1,3 +1,4 @@
+import { LrcEntry } from 'musicplayer/src/main/ets/Entry'
 import { musicInfoModel } from './musicInfoModel'
 
 export class musicModel {
@@ -5,12 +6,17 @@ export class musicModel {
   musicRawFile: string
   likeNumber: number
   commentNumber: number
+  lrcEntry: LrcEntry[] = []
 
-  constructor(Info: musicInfoModel, musicRawFile: string, likeNumber: number, commentNumber: number) {
+  constructor(Info: musicInfoModel, musicRawFile: string, likeNumber: number, commentNumber: number,
+    lrcEntry?: LrcEntry[]) {
     this.Info = Info
     this.musicRawFile = musicRawFile
     this.likeNumber = likeNumber
     this.commentNumber = commentNumber
+    if (lrcEntry) {
+      this.lrcEntry = lrcEntry
+    }
   }
 }
 

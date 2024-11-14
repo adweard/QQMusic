@@ -1,6 +1,5 @@
 import { List_1, recommendListModel } from "../viewModel/recommendListModel"
 import getAverageColor from "../utils/getColorPicker"
-import { SwipeRefresher } from "@kit.ArkUI"
 
 @Component
 export struct RecommendList {
@@ -11,13 +10,10 @@ export struct RecommendList {
     this.RecommendList.forEach((val) => {
       val.overlayColor = getAverageColor(getContext(this), val.imgName)
     })
-
-
   }
 
   build() {
     List({ space: 10 }) {
-
 
       ForEach(this.RecommendList, (obj: recommendListModel, index) => {
         ListItem() {
@@ -62,7 +58,6 @@ export struct RecommendList {
         .width(150)
         .onClick(() => {
           //TODO  列表一：推荐歌单跳转
-          console.log('测试被点击' + obj.overlayColor)
         })
 
       })

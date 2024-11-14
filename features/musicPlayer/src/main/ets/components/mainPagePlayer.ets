@@ -1,8 +1,7 @@
 import { playListModel, playListModelList } from "recommend"
-import { musicModel, RammsteinList } from "recommend/src/main/ets/viewModel/musicModel"
+import { musicModel} from "recommend/src/main/ets/viewModel/musicModel"
 import { musicPlayer } from "../utils/MusicPlayerUtil"
 import { media } from '@kit.MediaKit';
-import { MediaQueryEvent } from "@kit.ArkUI";
 
 @Component
 export struct mainPagePlayer {
@@ -12,46 +11,47 @@ export struct mainPagePlayer {
   @State musicName: string = ''
   @StorageLink('isPlaying') @Watch('playingStateChange') isPlaying: boolean = false
   @State singer: string = ''
-  @State player: media.AVPlayer | null = null
+  @StorageLink('player') player: media.AVPlayer | null = null
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
+  @State isPlayList: boolean = false
+  private preSeek: number = 0
 
   async aboutToAppear(): Promise<void> {
 
     let playIndex: number | null = null
     let playlist: playListModel | null = null
     let playMusic: musicModel | null = null
-    if (AppStorage.ref('playList') == undefined) {
-      AppStorage.setOrCreate('playList', playListModelList[0])
-      playlist = AppStorage.get('playList') as playListModel
-      AppStorage.setOrCreate('playMusic', playlist.musicList[0])
-      AppStorage.setOrCreate('playIndex', 0)
-      playIndex = AppStorage.get('playIndex') as number
-      playMusic = playlist.musicList[playIndex]
-      this.musicImg = playMusic.Info.img
-      this.musicName = playMusic.Info.name
-      this.singer = playMusic.Info.singer
-      musicPlayer.playByRawSrc(playMusic!.musicRawFile).then((player) => {
-        AppStorage.setOrCreate('player', player)
-        this.player = player
-      })
-
-      this.isPlaying = AppStorage.get('isPlaying') as boolean
-
-
+    //如果正在播放歌曲的序列号为空，说明第一次登录或播放列表为空
+    if (typeof AppStorage.get('playIndex') == "undefined") {
+      this.isPlayList = false
     } else {
-      playlist = AppStorage.get('playList') as playListModel
-      playIndex = AppStorage.get('playIndex') as number
-      playMusic = playlist.musicList[playIndex]
-      this.musicImg = playMusic.Info.img
-      this.musicName = playMusic.Info.name
-      this.singer = playMusic.Info.singer
-      this.player = AppStorage.get('player') as media.AVPlayer
-      this.isPlaying = AppStorage.get('isPlaying') as boolean
-      this.player = AppStorage.get('player') as media.AVPlayer
+      this.isPlayList = true
+      //重启程序，播放列表有东西，但此时player对象不存在
+      if (AppStorage.get('player') == undefined) {
+        this.preSeek = AppStorage.get('preSeek') as number
+        let playListIndex = AppStorage.get('playListIndex') as number
+        AppStorage.setOrCreate('playList', playListModelList[playListIndex])
+        let playIndex = AppStorage.get('playIndex') as number
+        AppStorage.setOrCreate('playMusic', playListModelList[playListIndex].musicList[playIndex])
 
+        let playMusic = playListModelList[playListIndex].musicList[playIndex]
+        this.musicImg = playMusic.Info.img
+        this.musicName = playMusic.Info.name
+        this.singer = playMusic.Info.singer
+        this.isPlaying = AppStorage.get('isPlaying') as boolean
+
+      } else {
+        playlist = AppStorage.get('playList') as playListModel
+        playIndex = AppStorage.get('playIndex') as number
+        playMusic = playlist.musicList[playIndex]
+        this.musicImg = playMusic.Info.img
+        this.musicName = playMusic.Info.name
+        this.singer = playMusic.Info.singer
+        this.player = AppStorage.get('player') as media.AVPlayer
+        this.isPlaying = AppStorage.get('isPlaying') as boolean
+        this.player = AppStorage.get('player') as media.AVPlayer
+      }
     }
-
-
   }
 
   build() {
@@ -67,6 +67,7 @@ export struct mainPagePlayer {
         })
       Blank()
         .width(12)
+
       Row() {
         Text(this.musicName)
           .fontSize(16)
@@ -93,18 +94,23 @@ export struct mainPagePlayer {
         })
         .size({ width: 20, height: 20 })
         .onClick(() => {
-          musicPlayer.playBefore()
+          if (this.isPlayList) {
+            musicPlayer.playBefore()
+          }
         })
 
       //播放暂停
       Image(this.isPlaying ? $r('app.media.pause_mainpageplayer') : $r('app.media.play_mainpageplayer'))
         .size({ width: 28, height: 28 })
         .margin({ left: 8, right: 8 })
+
         .onClick(() => {
-          if (this.isPlaying == true) {
-            this.player?.pause()
-          } else {
-            this.player?.play()
+          if (this.isPlayList) {
+            if (this.isPlaying == true) {
+              this.player?.pause()
+            } else {
+              this.player?.play()
+            }
           }
         })
       //播放下一首
@@ -112,15 +118,18 @@ export struct mainPagePlayer {
         .size({ width: 20, height: 20 })
         .rotate({ angle: 180 })
         .onClick(() => {
-          musicPlayer.playNext()
+          if (this.isPlayList) {
+            musicPlayer.playNext()
+          }
         })
-
 
     }.backgroundColor('#FCFDFF')
     .size({ width: '100%', height: 50 })
     .onClick(() => {
-      AppStorage.setOrCreate('player', this.player)
-      this.pageIndexInfos.pushPathByName('musicPlayer', AppStorage.get('playMusic'))
+      if (this.isPlayList) {
+        AppStorage.setOrCreate('player', this.player)
+        this.pageIndexInfos.pushPathByName('musicPlayer', AppStorage.get('playMusic'))
+      }
     })
 
   }
@@ -136,5 +145,21 @@ export struct mainPagePlayer {
 
   playingStateChange() {
     this.isPlaying = AppStorage.get('isPlaying') as boolean
+    if (this.isPlayList == false) {
+      this.getPlayerInfo()
+    }
+  }
+
+  getPlayerInfo() {
+    this.isPlayList = true
+    let playlist = AppStorage.get('playList') as playListModel
+    let playIndex = AppStorage.get('playIndex') as number
+    let playMusic = playlist.musicList[playIndex]
+    this.musicImg = playMusic.Info.img
+    this.musicName = playMusic.Info.name
+    this.singer = playMusic.Info.singer
+    this.isPlaying = AppStorage.get('isPlaying') as boolean
+    this.player = AppStorage.get('player') as media.AVPlayer
   }
 }
+

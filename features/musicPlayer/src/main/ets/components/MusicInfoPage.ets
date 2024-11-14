@@ -10,6 +10,10 @@ export struct musicInfoPage {
   @State musicInfo: musicModel = AppStorage.get('playMusic') as musicModel
   @Provide musicImg: string = this.musicInfo.Info.img
 
+  aboutToAppear(): void {
+
+  }
+
   build() {
     Column() {
       Blank()

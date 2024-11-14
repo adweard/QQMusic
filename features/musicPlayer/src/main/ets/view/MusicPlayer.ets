@@ -2,7 +2,7 @@ import { musicModel } from "recommend/src/main/ets/viewModel/musicModel";
 import { header } from "../components/header";
 import { lyrics } from "../components/lyricsPage";
 import { musicInfoPage } from "../components/MusicInfoPage";
-
+import { lycModel } from "../utils/lycUtil";
 
 @Component
 export struct MusicPlayerPage {
@@ -11,7 +11,7 @@ export struct MusicPlayerPage {
   @Provide musicInfo: musicModel = this.param[0]
 
   aboutToAppear(): void {
-    console.log("测试播放" + this.musicInfo.Info.name + '   ' + this.musicInfo.Info.img)
+    this.musicInfo.lrcEntry = lycModel.getLycFile(this.musicInfo.musicRawFile)
   }
 
   build() {
@@ -35,7 +35,11 @@ export struct MusicPlayerPage {
       header()
         .padding({ top: Number(AppStorage.get('topHeight')) })
     }
-    .backgroundColor('#ff530606')
+    // .backgroundColor('#ff530606')
+    .backgroundImage($r(this.musicInfo.Info.img))
+    .backgroundImageSize(ImageSize.Cover)
+    .backgroundBlurStyle(BlurStyle.BACKGROUND_ULTRA_THICK)
+
     .height('100%')
     .width('100%')
     .alignContent(Alignment.Top)

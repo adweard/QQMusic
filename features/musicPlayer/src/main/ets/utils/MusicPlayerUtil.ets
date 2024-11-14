@@ -23,6 +23,11 @@ class MusicPlayer {
           break;
         case 'playing':
           player.play()
+          if (AppStorage.get('reStart') == true) {
+            player.seek(AppStorage.get('preSeek'))
+            player.pause()
+            AppStorage.setOrCreate('reStart', false)
+          }
           this.isPlaying = true
           AppStorage.setOrCreate('isPlaying', this.isPlaying)
           break;
@@ -33,9 +38,9 @@ class MusicPlayer {
           break;
         case 'completed':
           if (this.loop === true) {
-            player.play() // 播放结束继续播放：循环播放
+            this.playNext()
           } else {
-            player.stop() // 播放结束
+            this.playNext() // 播放结束
           }
           break;
         case 'stopped':
@@ -48,7 +53,6 @@ class MusicPlayer {
     this.avPlayer = player
     return this.avPlayer
   }
-
   // 加载 src/main/resources/rawfile 的文件
   async playByRawSrc(rawFdPath: string): Promise<media.AVPlayer> {
     const player = await this.getAVPlayerInstance()
@@ -62,7 +66,39 @@ class MusicPlayer {
     player.fdSrc = fileDescriptor
     // 播放
     player.play()
+
+    player.on('timeUpdate', (val) => {
+      AppStorage.setOrCreate('seek', val)
+    })
     return player
+
+  }
+
+  // 加载 src/main/resources/rawfile 的文件
+  async rePlayByRawSrc(rawFdPath: string): Promise<media.AVPlayer> {
+    const reSeek = AppStorage.get('seek') as number
+    console.log('获取，在创建对象时获取的seek', reSeek.toString())
+    const player = await this.getAVPlayerInstance()
+    // 先释放原来的资源
+    // await player.reset()
+    // 获取文件信息
+    const context = getContext()
+    // 加载 src/main/resources/rawfile 文件夹中的文件
+    const fileDescriptor = await context.resourceManager.getRawFd(rawFdPath)
+    // 设置播放路径
+    player.fdSrc = fileDescriptor
+    player.on('seekDone', val => {
+      console.log('seekDone 跳转成功' + val)
+    })
+    // 播放
+    player.pause()
+
+    player.on('timeUpdate', (val) => {
+      AppStorage.setOrCreate('seek', val)
+    })
+
+    return player
+
   }
 
   // 停止播放
@@ -81,12 +117,10 @@ class MusicPlayer {
     let playList: playListModel = AppStorage.get('playList') as playListModel
     let playIndex: number = AppStorage.get('playIndex') as number
     if (playIndex == playList.musicList.length - 1) {
-      console.log('状态机进入播放下一首 最后一首')
       this.playByRawSrc(playList.musicList[0].musicRawFile)
       AppStorage.setOrCreate('playIndex', 0)
       AppStorage.setOrCreate('playMusic', playList.musicList[0])
     } else {
-      console.log('状态机进入播放下一首 非最后一首')
       this.playByRawSrc(playList.musicList[playIndex+1].musicRawFile)
       AppStorage.setOrCreate('playIndex', playIndex + 1)
       AppStorage.setOrCreate('playMusic', playList.musicList[playIndex + 1])

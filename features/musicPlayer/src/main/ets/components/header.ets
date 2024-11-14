@@ -20,7 +20,6 @@ export struct header {
       .size({ width: 30, height: 30 })
       .backgroundColor(Color.Transparent)
     }
-    // .backgroundColor('#ff5e82ff')
     .height(50)
     .width('90%')
     .justifyContent(FlexAlign.SpaceBetween)

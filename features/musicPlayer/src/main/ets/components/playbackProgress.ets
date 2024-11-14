@@ -7,9 +7,16 @@ export struct playbackProgress {
   @State musicUpdateTime: number = 0
   @State updateTime: string = '00:00'
   @State durationTime: string = '00:00'
+  @StorageLink('seek') @Watch('onTimeChange') seek: number = 0
 
   aboutToAppear(): void {
-    console.log('获取对象' + this.player.duration)
+    this.musicDuration = this.player.duration
+    this.durationTime = this.getTime(this.player.duration)
+    this.player.on('durationUpdate', (val) => {
+      this.musicDuration = val
+      this.durationTime = this.getTime(val)
+    })
+
 
   }
 
@@ -20,19 +27,7 @@ export struct playbackProgress {
         .onChange(val => {
           this.player.seek(val, media.SeekMode.SEEK_CLOSEST)
         })
-        .onAppear(() => {
 
-          this.musicDuration = this.player.duration
-          this.durationTime = this.getTime(this.player.duration)
-          this.player.on('durationUpdate', (val) => {
-            this.musicDuration = val
-            this.durationTime = this.getTime(val)
-          })
-          this.player.on('timeUpdate', (val) => {
-            this.musicUpdateTime = val
-            this.updateTime = this.getTime(val)
-          })
-        })
         .width('100%')
       Row() {
         Text(this.updateTime)
@@ -66,5 +61,10 @@ export struct playbackProgress {
       return `${formattedMinutes}:${formattedSeconds}`
     }
     return `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  onTimeChange() {
+    this.musicUpdateTime = this.seek
+    this.updateTime = this.getTime(this.musicUpdateTime)
   }
 }

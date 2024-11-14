@@ -22,7 +22,6 @@ export struct Header {
       Button() {
         Image($r('app.media.more_icon'))
           .size({ width: 25, height: 25 })
-
       }
       .backgroundColor(Color.Transparent)
 
