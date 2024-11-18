@@ -1,5 +1,5 @@
 import { playListModel, playListModelList } from "recommend"
-import { musicModel} from "recommend/src/main/ets/viewModel/musicModel"
+import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
 import { musicPlayer } from "../utils/MusicPlayerUtil"
 import { media } from '@kit.MediaKit';
 
@@ -135,6 +135,10 @@ export struct mainPagePlayer {
   }
 
   playIndexChange() {
+    while (AppStorage.get('playList') == undefined) {
+      console.log('测试111')
+    }
+    console.log('测试获取playList' + AppStorage.get('playList') + '-' + AppStorage.get('playIndex'))
     this.musicImg =
       (AppStorage.get('playList') as playListModel).musicList[AppStorage.get('playIndex') as number].Info.img
     this.musicName =

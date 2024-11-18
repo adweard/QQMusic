@@ -1,5 +1,8 @@
 import { media } from '@kit.MediaKit';
+import { MusicPlayMode } from 'mediacommon';
 import { playListModel } from "recommend"
+import { util } from '@kit.ArkTS';
+import { getRandomInt } from 'recommend/src/main/ets/utils/getRandomInt';
 
 class MusicPlayer {
   private avPlayer: media.AVPlayer | null = null
@@ -37,11 +40,29 @@ class MusicPlayer {
           AppStorage.setOrCreate('isPlaying', this.isPlaying)
           break;
         case 'completed':
-          if (this.loop === true) {
-            this.playNext()
-          } else {
-            this.playNext() // 播放结束
+          switch (AppStorage.get('playMode') as Number) {
+            case (MusicPlayMode.SINGLE_CYCLE):
+              player.play()
+              break
+            case (MusicPlayMode.ORDER):
+              this.playNext()
+              break
+            case (MusicPlayMode.RANDOM):
+              let playList: playListModel = AppStorage.get('playList') as playListModel
+              let len = playList.musicList.length
+              let t = getRandomInt(0, len - 1)
+              while (t == AppStorage.get('playIndex') || t > len - 1 || t < 0) {
+                t = getRandomInt(0, len)
+              }
+              this.playByRawSrc(playList.musicList[t].musicRawFile).then(player => {
+                AppStorage.setOrCreate('player', player)
+              })
+              AppStorage.setOrCreate('playIndex', t)
+              AppStorage.setOrCreate('playMusic', playList.musicList[t])
+
+
           }
+
           break;
         case 'stopped':
           player.reset() // stop 时 reset -> 释放音频资源
@@ -53,6 +74,7 @@ class MusicPlayer {
     this.avPlayer = player
     return this.avPlayer
   }
+
   // 加载 src/main/resources/rawfile 的文件
   async playByRawSrc(rawFdPath: string): Promise<media.AVPlayer> {
     const player = await this.getAVPlayerInstance()

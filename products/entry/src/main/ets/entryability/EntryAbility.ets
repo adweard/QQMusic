@@ -3,6 +3,8 @@ import { hilog } from '@kit.PerformanceAnalysisKit';
 import { window } from '@kit.ArkUI';
 import { playListModelList } from 'recommend';
 import { musicPlayer } from 'musicplayer/src/main/ets/utils/MusicPlayerUtil';
+import { MusicPlayMode } from 'mediacommon';
+
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
@@ -31,6 +33,7 @@ export default class EntryAbility extends UIAbility {
         hilog.error(0x0000, 'testTag', 'Failed to load the content. Cause: %{public}s', JSON.stringify(err) ?? '');
         return;
       }
+      PersistentStorage.persistProp('playMode', MusicPlayMode.ORDER)
       PersistentStorage.persistProp('playListIndex', undefined)
       PersistentStorage.persistProp('playIndex', undefined)
       PersistentStorage.persistProp('seek', undefined)
@@ -39,12 +42,13 @@ export default class EntryAbility extends UIAbility {
         //播放列表不存在
       } else {
         //播放列表存在
+        console.log('测试重启' + AppStorage.get('preSeek') + AppStorage.get('playListIndex'))
         let preSeek = AppStorage.get('preSeek') as number
         let playListIndex = AppStorage.get('playListIndex') as number
         AppStorage.setOrCreate('playList', playListModelList[playListIndex])
         let playIndex = AppStorage.get('playIndex') as number
         AppStorage.setOrCreate('playMusic', playListModelList[playListIndex].musicList[playIndex])
-        AppStorage.setOrCreate('reStart',true)
+        AppStorage.setOrCreate('reStart', true)
         musicPlayer.rePlayByRawSrc(playListModelList[playListIndex].musicList[playIndex].musicRawFile)
           .then((player) => {
             player.pause()

@@ -12,7 +12,7 @@ export struct MusicListPage {
   @Provide playList: playListModel = this.param[0]
 
   aboutToAppear(): void {
-
+    console.log('测试playList' + this.playList)
 
   }
 

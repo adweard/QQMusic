@@ -67,6 +67,7 @@ export struct recentlyListenedList {
 
           }.onClick(() => {
             this.pageIndexInfos.pushPathByName('musicList', val)
+            AppStorage.setOrCreate('playListIndex', index)
           })
         })
       }.listDirection(Axis.Horizontal)

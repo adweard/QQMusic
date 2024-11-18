@@ -7,6 +7,10 @@ export struct musicList {
   @Consume playList: playListModel
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
 
+  aboutToAppear(): void {
+    console.log('测试内部list' + this.playList.musicList[0].Info.name)
+  }
+
   build() {
     List({ space: 12 }) {
       ForEach(this.playList.musicList, (val: musicModel, index) => {
@@ -41,12 +45,13 @@ export struct musicList {
           .alignItems(VerticalAlign.Center)
           .onClick(() => {
             this.pageIndexInfos.pushPathByName('musicPlayer', val)
-
+            AppStorage.setOrCreate('playList', this.playList)
             AppStorage.setOrCreate('playMusic', val)
 
             AppStorage.setOrCreate('playIndex', index)
+
             console.log('状态机进入播放状态' + val.Info.name + index.toString())
-            musicPlayer.setLoop(true)
+
             //TODO 控制播放循环与否的对象
             AppStorage.setOrCreate("musicPlayer", musicPlayer)
             musicPlayer.playByRawSrc(val.musicRawFile).then((player) => {

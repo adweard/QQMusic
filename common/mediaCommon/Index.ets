@@ -1,1 +1,1 @@
-export { MainPage } from './src/main/ets/components/MainPage'
+export { MusicPlayMode } from './src/main/ets/viewModel/playData'

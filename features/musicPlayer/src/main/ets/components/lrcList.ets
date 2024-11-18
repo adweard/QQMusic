@@ -55,7 +55,7 @@ export struct lrcList {
     .edgeEffect(EdgeEffect.None)
   }
 
-  playIndexChange(changedPropertyName: string) {
+  playIndexChange() {
     //更新歌词数组
     this.lrc = []
     let newLrc =
@@ -63,11 +63,11 @@ export struct lrcList {
     this.lrc = newLrc
   }
 
-  playLrcIndexChange(changedPropertyName: string) {
+  playLrcIndexChange() {
     this.lrcScroll.scrollToIndex(this.playLrcIndex, true, ScrollAlign.CENTER)
   }
 
-  timeUpdate(changedPropertyName: string) {
+  timeUpdate() {
     this.lrc.forEach((val, index) => {
       if (this.playTime >= val.lineStartTime && this.playTime <= val.lineStartTime + val.lineDuration) {
         this.playLrcIndex = index
