@@ -1,6 +1,7 @@
 import { media } from "@kit.MediaKit";
 import { MusicPlayMode } from "mediacommon"
 import { musicPlayer } from '../utils/MusicPlayerUtil'
+import ShowToast from '../utils/showToastUtil'
 
 @Component
 export struct playerControllerButton {
@@ -23,14 +24,17 @@ export struct playerControllerButton {
           if (this.musicPlayMode == MusicPlayMode.SINGLE_CYCLE) {
             //切换到随机播放
             AppStorage.setOrCreate('playMode', MusicPlayMode.RANDOM)
+            ShowToast.shortToast($r('app.string.playMOde_RANDOM'))
             //如果是随机播放
           } else if (this.musicPlayMode == MusicPlayMode.RANDOM) {
             //切换到顺序播放
             AppStorage.setOrCreate('playMode', MusicPlayMode.ORDER)
+            ShowToast.shortToast($r('app.string.playMOde_ORDER'))
             //如果是顺序播放
           } else if (this.musicPlayMode == MusicPlayMode.ORDER) {
             //切换到单曲循环
             AppStorage.setOrCreate('playMode', MusicPlayMode.SINGLE_CYCLE)
+            ShowToast.shortToast($r('app.string.playMOde_SINGLE'))
           }
         })
 
@@ -86,6 +90,13 @@ export struct playerControllerButton {
     }
     if (this.musicPlayMode == MusicPlayMode.ORDER) {
       this.playModeImg = $r('app.media.shunxubofang_player')
+    }
+  }
+
+  @Builder
+  songListBindSheetBuilder() {
+    Column() {
+
     }
   }
 }

@@ -3,6 +3,18 @@
     {
       "name": "page_show",
       "value": "page from package"
+    },
+    {
+      "name": "playMOde_SINGLE",
+      "value": "切换到单曲循环"
+    },
+    {
+      "name": "playMOde_RANDOM",
+      "value": "切换到随机播放"
+    },
+    {
+      "name": "playMOde_ORDER",
+      "value": "切换到顺序播放"
     }
   ]
 }
