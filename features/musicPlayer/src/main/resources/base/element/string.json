@@ -15,6 +15,10 @@
     {
       "name": "playMOde_ORDER",
       "value": "切换到顺序播放"
+    },
+    {
+      "name": "onlyOne_MusicList",
+      "value": "歌单只有一首歌了哦，换另一个喜欢的歌单吧！"
     }
   ]
 }

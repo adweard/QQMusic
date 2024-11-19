@@ -6,9 +6,10 @@ import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
 export struct musicList {
   @Consume playList: playListModel
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
+  private disseminateList = this.playList
 
   aboutToAppear(): void {
-    console.log('测试内部list' + this.playList.musicList[0].Info.name)
+
   }
 
   build() {
@@ -45,7 +46,7 @@ export struct musicList {
           .alignItems(VerticalAlign.Center)
           .onClick(() => {
             this.pageIndexInfos.pushPathByName('musicPlayer', val)
-            AppStorage.setOrCreate('playList', this.playList)
+            AppStorage.setOrCreate('playList', this.disseminateList)
             AppStorage.setOrCreate('playMusic', val)
 
             AppStorage.setOrCreate('playIndex', index)

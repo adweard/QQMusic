@@ -1,5 +1,7 @@
 import { media } from "@kit.MediaKit";
 import { MusicPlayMode } from "mediacommon"
+import { playListModel } from "recommend";
+import { musicModel } from "recommend/src/main/ets/viewModel/musicModel";
 import { musicPlayer } from '../utils/MusicPlayerUtil'
 import ShowToast from '../utils/showToastUtil'
 
@@ -9,6 +11,8 @@ export struct playerControllerButton {
   @StorageLink('isPlaying') @Watch('playStateChange') isPlaying: boolean = AppStorage.get('isPlaying') as boolean
   @StorageLink('playMode') @Watch('playModeChange') musicPlayMode: number = AppStorage.get('playMode') as number
   @State playModeImg: Resource = $r('app.media.shunxubofang_player')
+  @StorageLink('playList') playList: playListModel = AppStorage.get('playList') as playListModel
+  @State isShow: boolean = false
 
   aboutToAppear(): void {
     this.playModeChange()
@@ -69,9 +73,20 @@ export struct playerControllerButton {
           musicPlayer.playNext()
 
         })
+
       //歌曲列表
       Image($r('app.media.musicList'))
+        .onClick(() => {
+          this.isShow = true
+        })
         .size({ width: 20 })
+        .bindSheet($$this.isShow, this.songListBindSheetBuilder(), {
+          detents: ['80%', '79.5%'],
+          dragBar: true,
+          backgroundColor: '#ffffffff',
+          showClose: false
+
+        })
     }.justifyContent(FlexAlign.Center)
     .width('95%')
   }
@@ -96,7 +111,61 @@ export struct playerControllerButton {
   @Builder
   songListBindSheetBuilder() {
     Column() {
+      List({ space: 10 }) {
+        ForEach(this.playList.musicList, (value: musicModel, index) => {
+          ListItem() {
+            Row() {
+              Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Start }) {
+                Text(value.Info.name)
+                  .fontSize(18)
+                  .fontWeight(FontWeight.Regular)
+                  .fontColor('#ff000000')
+                  .maxLines(1)
 
-    }
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+
+                Text('·' + value.Info.singer)
+                  .fontSize(15)
+                  .fontWeight(FontWeight.Normal)
+                  .fontColor('#ff545454')
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+              }.width(300)
+
+
+              Image($r('app.media.close'))
+                .size({ height: 20 })
+                .onClick(() => {
+                  if (this.playList.musicList.length > 1) {
+                    //如果播放列表还有大于等于一首歌
+                    this.playList.musicList.splice(index, 1)
+                    AppStorage.setOrCreate('playList', this.playList)
+                    console.log('测试' + index)
+                    AppStorage.setOrCreate('playIndex', index)
+                    if (index == this.playList.musicList.length - 1) {
+                      console.log('测试 删除最后一首歌')
+                    }
+                  } else {
+                    //如果播放列表只有一首歌了
+                    ShowToast.longToast($r('app.string.onlyOne_MusicList'))
+                  }
+                  if (index == AppStorage.get("playIndex")) {
+                    musicPlayer.playNext()
+                  }
+                })
+            }.alignItems(VerticalAlign.Center)
+            .justifyContent(FlexAlign.SpaceBetween)
+            .height(35)
+          }.width('100%')
+        })
+      }.width('100%')
+      .padding({ bottom: Number(AppStorage.get('bottomHeight')) })
+
+
+      Blank(20)
+    }.offset({ top: 20 })
+
   }
 }

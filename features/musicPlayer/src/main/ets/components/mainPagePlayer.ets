@@ -2,6 +2,7 @@ import { playListModel, playListModelList } from "recommend"
 import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
 import { musicPlayer } from "../utils/MusicPlayerUtil"
 import { media } from '@kit.MediaKit';
+import ShowToast from '../utils/showToastUtil'
 
 @Component
 export struct mainPagePlayer {
@@ -14,6 +15,8 @@ export struct mainPagePlayer {
   @StorageLink('player') player: media.AVPlayer | null = null
   @StorageLink('pageIndexInfos') pageIndexInfos: NavPathStack = new NavPathStack()
   @State isPlayList: boolean = false
+  @State isShow: boolean = false
+  @StorageLink('playList') playList: playListModel = AppStorage.get('playList') as playListModel
   private preSeek: number = 0
 
   async aboutToAppear(): Promise<void> {
@@ -115,12 +118,19 @@ export struct mainPagePlayer {
         })
       //播放下一首
       Image($r('app.media.changeMusic_player'))
+        .margin({ right: 20 })
         .size({ width: 20, height: 20 })
         .rotate({ angle: 180 })
         .onClick(() => {
           if (this.isPlayList) {
             musicPlayer.playNext()
           }
+        })
+      //歌单列表半模态弹窗
+      Image($r('app.media.musicList'))
+        .size({ width: 20 })
+        .onClick(() => {
+          this.isShow = true
         })
 
     }.backgroundColor('#FCFDFF')
@@ -130,6 +140,13 @@ export struct mainPagePlayer {
         AppStorage.setOrCreate('player', this.player)
         this.pageIndexInfos.pushPathByName('musicPlayer', AppStorage.get('playMusic'))
       }
+    })
+    .bindSheet($$this.isShow, this.songListBindSheetBuilder(), {
+      detents: ['80%', '79.5%'],
+      dragBar: true,
+      backgroundColor: '#ffffffff',
+      showClose: false
+
     })
 
   }
@@ -164,6 +181,67 @@ export struct mainPagePlayer {
     this.singer = playMusic.Info.singer
     this.isPlaying = AppStorage.get('isPlaying') as boolean
     this.player = AppStorage.get('player') as media.AVPlayer
+  }
+
+  @Builder
+  songListBindSheetBuilder() {
+    Column() {
+      List({ space: 10 }) {
+        ForEach(this.playList.musicList, (value: musicModel, index) => {
+          ListItem() {
+            Row() {
+              Flex({ direction: FlexDirection.Row, justifyContent: FlexAlign.Start }) {
+                Text(value.Info.name)
+                  .fontSize(18)
+                  .fontWeight(FontWeight.Regular)
+                  .fontColor('#ff000000')
+                  .maxLines(1)
+
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+
+                Text('·' + value.Info.singer)
+                  .fontSize(15)
+                  .fontWeight(FontWeight.Normal)
+                  .fontColor('#ff545454')
+                  .maxLines(1)
+                  .textOverflow({ overflow: TextOverflow.Ellipsis })
+
+              }.width(300)
+
+
+              Image($r('app.media.close'))
+                .size({ height: 20 })
+                .onClick(() => {
+                  if (this.playList.musicList.length > 1) {
+                    //如果播放列表还有大于等于一首歌
+                    this.playList.musicList.splice(index, 1)
+                    AppStorage.setOrCreate('playList', this.playList)
+                    console.log('测试' + index)
+                    AppStorage.setOrCreate('playIndex', index)
+                    if (index == this.playList.musicList.length - 1) {
+                      console.log('测试 删除最后一首歌')
+                    }
+                  } else {
+                    //如果播放列表只有一首歌了
+                    ShowToast.longToast($r('app.string.onlyOne_MusicList'))
+                  }
+                  if (index == AppStorage.get("playIndex")) {
+                    musicPlayer.playNext()
+                  }
+                })
+            }.alignItems(VerticalAlign.Center)
+            .justifyContent(FlexAlign.SpaceBetween)
+            .height(35)
+          }.width('100%')
+        })
+      }.width('100%')
+      .padding({ bottom: Number(AppStorage.get('bottomHeight')) })
+
+
+      Blank(20)
+    }.offset({ top: 20 })
+
   }
 }
 
