@@ -1,10 +1,24 @@
 {
   "app": {
-    "signingConfigs": [],
+    "signingConfigs": [
+      {
+        "name": "CloudMusicPlayer",
+        "type": "HarmonyOS",
+        "material": {
+          "storePassword": "0000001C59163B8D907383DDE7F5E133AC4F857E7F4D3BAC06E72B6706B49D1FBFD6CAC709C6390FA7577809",
+          "certpath": "E:/ohomDemos/appKeys/CloudMusicPlayer/CloudMusicPlayer.cer",
+          "keyAlias": "CloudMusicPlayer",
+          "keyPassword": "0000001C6A9C4312C2FA9C9262BCACCADF1513B83CC295F3E63DEB947E924CE26A4AAD2D3B8A75F84290F211",
+          "profile": "E:/ohomDemos/appKeys/CloudMusicPlayer/CloudMusicPlayerDebug.p7b",
+          "signAlg": "SHA256withECDSA",
+          "storeFile": "E:/ohomDemos/appKeys/CloudMusicPlayer/.p12"
+        }
+      }
+    ],
     "products": [
       {
         "name": "default",
-        "signingConfig": "default",
+        "signingConfig": "CloudMusicPlayer",
         "compatibleSdkVersion": "5.0.0(12)",
         "runtimeOS": "HarmonyOS",
         "buildOption": {
@@ -68,6 +82,10 @@
     {
       "name": "mediaCommon",
       "srcPath": "./common/mediaCommon",
+    },
+    {
+      "name": "login",
+      "srcPath": "./features/login",
     }
   ]
 }

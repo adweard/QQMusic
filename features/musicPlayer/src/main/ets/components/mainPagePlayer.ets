@@ -130,7 +130,9 @@ export struct mainPagePlayer {
       Image($r('app.media.musicList'))
         .size({ width: 20 })
         .onClick(() => {
-          this.isShow = true
+          if (this.playList) {
+            this.isShow = true
+          }
         })
 
     }.backgroundColor('#FCFDFF')

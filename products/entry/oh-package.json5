@@ -13,7 +13,9 @@
     "recommend": "file:../../features/recommend",
     "musiclist": "file:../../features/musicList",
     "musicplayer": "file:../../features/musicPlayer",
-    "mediacommon": "file:../../common/mediaCommon"
+    "mediacommon": "file:../../common/mediaCommon",
+    "@hw-agconnect/auth": "^1.0.1",
+    "login": "file:../../features/login"
   }
 }
 

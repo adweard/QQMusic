@@ -6,6 +6,7 @@ import { MinePage } from 'mine'
 import { mainPagePlayer } from 'musicplayer'
 import { MusicListPage } from 'musiclist'
 import { MusicPlayerPage } from 'musicplayer'
+import { loginPage } from 'login'
 
 
 @Entry
@@ -31,15 +32,20 @@ struct Index {
 
   @Builder
   pagesMap(name: string, param?: object) {
-    if (name === 'musicList') {
+    if (name === 'loginPage') {
+      NavDestination() {
+        loginPage()
+      }.hideTitleBar(true)
+    } else if (name === 'musicList') {
       NavDestination() {
         MusicListPage()
       }.hideTitleBar(true)
+    } else  if (name === 'musicPlayer') {
+      NavDestination() {
+        MusicPlayerPage()
+      }.hideTitleBar(true)
     }
-    if (name === 'musicPlayer')
-    NavDestination() {
-      MusicPlayerPage()
-    }.hideTitleBar(true)
+
 
   }
 

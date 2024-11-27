@@ -12,6 +12,8 @@
     "deliveryWithInstall": true,
     "installationFree": false,
     "pages": "$profile:main_pages",
+    "requestPermissions": [{
+      "name": "ohos.permission.INTERNET"}],
     "abilities": [
       {
         "name": "EntryAbility",
@@ -34,6 +36,11 @@
         ]
       }
     ],
+    "metadata": [{
+      "name": "client_id",
+      "value": "112615103"
+    }]
+    ,
     "extensionAbilities": [
       {
         "name": "EntryBackupAbility",
@@ -48,5 +55,5 @@
         ]
       }
     ]
-  }
+  },
 }

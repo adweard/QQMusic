@@ -4,11 +4,19 @@ import { window } from '@kit.ArkUI';
 import { playListModelList } from 'recommend';
 import { musicPlayer } from 'musicplayer/src/main/ets/utils/MusicPlayerUtil';
 import { MusicPlayMode } from 'mediacommon';
+import auth from '@hw-agconnect/auth';
+import { buffer } from '@kit.ArkTS';
 
 
 export default class EntryAbility extends UIAbility {
   onCreate(want: Want, launchParam: AbilityConstant.LaunchParam): void {
     hilog.info(0x0000, 'testTag', '%{public}s', 'Ability onCreate');
+    //云端验证
+    //初始化SDK
+    let file = this.context.resourceManager.getRawFileContentSync('agconnect-services.json');
+    let json: string = buffer.from(file.buffer).toString();
+    auth.init(this.context, json);
+
 
   }
 
@@ -37,6 +45,7 @@ export default class EntryAbility extends UIAbility {
       PersistentStorage.persistProp('playListIndex', undefined)
       PersistentStorage.persistProp('playIndex', undefined)
       PersistentStorage.persistProp('seek', undefined)
+      PersistentStorage.persistProp('sign', 0)
       AppStorage.setOrCreate('preSeek', AppStorage.get('seek'))
       if (typeof AppStorage.get('playIndex') == 'undefined') {
         //播放列表不存在
@@ -49,7 +58,7 @@ export default class EntryAbility extends UIAbility {
         let playIndex = AppStorage.get('playIndex') as number
         AppStorage.setOrCreate('playMusic', playListModelList[playListIndex].musicList[playIndex])
         AppStorage.setOrCreate('reStart', true)
-        musicPlayer.rePlayByRawSrc(playListModelList[playListIndex].musicList[playIndex].musicRawFile)
+        musicPlayer.rePlayByRawSrc()
           .then((player) => {
             player.pause()
             AppStorage.setOrCreate('player', player)

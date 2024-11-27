@@ -1,6 +1,7 @@
 import { musicPlayer } from "musicplayer/src/main/ets/utils/MusicPlayerUtil"
 import { playListModel } from "recommend"
 import { musicModel } from "recommend/src/main/ets/viewModel/musicModel"
+import { BusinessError } from "@kit.BasicServicesKit";
 
 @Component
 export struct musicList {
@@ -58,8 +59,13 @@ export struct musicList {
             musicPlayer.playByRawSrc(val.musicRawFile).then((player) => {
               //TODO 控制播放状态机的对象
               AppStorage.setOrCreate("player", player)
+              console.log('测试 进入播放了')
+              console.log('测试播放对象时长' + player.duration)
+            }).catch((err: BusinessError) => {
+              console.log('测试 进入播放异常了')
+              console.log('测试播放出错' + err.name + '-' + err.code + '-' + err.message)
             })
-
+            console.log("测试 onclick结束")
           })
 
         }.onClick(() => {

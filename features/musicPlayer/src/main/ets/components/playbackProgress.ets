@@ -10,6 +10,8 @@ export struct playbackProgress {
   @StorageLink('seek') @Watch('onTimeChange') seek: number = 0
 
   aboutToAppear(): void {
+    console.log('测试' + typeof (AppStorage.get("player")))
+    console.log('测试 是否有对象' + typeof (this.player))
     this.musicDuration = this.player.duration
     this.durationTime = this.getTime(this.player.duration)
     this.player.on('durationUpdate', (val) => {
