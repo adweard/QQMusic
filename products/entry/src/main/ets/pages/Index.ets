@@ -6,7 +6,7 @@ import { MinePage } from 'mine'
 import { mainPagePlayer } from 'musicplayer'
 import { MusicListPage } from 'musiclist'
 import { MusicPlayerPage } from 'musicplayer'
-import { loginPage } from 'login'
+import { createUserSetInfoPage, loginPage, regPage } from 'login'
 
 
 @Entry
@@ -40,9 +40,17 @@ struct Index {
       NavDestination() {
         MusicListPage()
       }.hideTitleBar(true)
-    } else  if (name === 'musicPlayer') {
+    } else if (name === 'musicPlayer') {
       NavDestination() {
         MusicPlayerPage()
+      }.hideTitleBar(true)
+    } else if (name === 'reg') {
+      NavDestination() {
+        regPage()
+      }.hideTitleBar(true)
+    } else if (name === 'createUserInfo') {
+      NavDestination() {
+        createUserSetInfoPage()
       }.hideTitleBar(true)
     }
 

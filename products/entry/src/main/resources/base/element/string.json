@@ -19,6 +19,14 @@
     {
       "name": "MainPageHeader_width",
       "value": "100%"
+    },
+    {
+      "name": "READ_IMAGEVIDEO_reason",
+      "value": "需要获取相册读取权限"
+    },
+    {
+      "name": "EntryAbility1_desc",
+      "value": "需要获取相册权限"
     }
   ]
 }
