@@ -6,7 +6,16 @@ import { MinePage } from 'mine'
 import { mainPagePlayer } from 'musicplayer'
 import { MusicListPage } from 'musiclist'
 import { MusicPlayerPage } from 'musicplayer'
-import { createUserSetInfoPage, loginPage, regPage } from 'login'
+import {
+  bindEmailPage,
+  bindPhoneNumberPage,
+  createUserSetInfoPage,
+  loginPage,
+  regPage,
+  updateUserInfoPage
+} from 'login'
+import { createMusicPage } from 'createmusicandplaylist'
+import { createPlayListPage } from 'createmusicandplaylist'
 
 
 @Entry
@@ -51,6 +60,26 @@ struct Index {
     } else if (name === 'createUserInfo') {
       NavDestination() {
         createUserSetInfoPage()
+      }.hideTitleBar(true)
+    } else if (name === 'updateUserInfo') {
+      NavDestination() {
+        updateUserInfoPage()
+      }.hideTitleBar(true)
+    } else if (name === 'bindEmail') {
+      NavDestination() {
+        bindEmailPage()
+      }.hideTitleBar(true)
+    } else if (name === 'bindPhone') {
+      NavDestination() {
+        bindPhoneNumberPage()
+      }.hideTitleBar(true)
+    } else if (name === 'createMusic') {
+      NavDestination() {
+        createMusicPage()
+      }.hideTitleBar(true)
+    } else if (name === 'createPlayList') {
+      NavDestination() {
+        createPlayListPage()
       }.hideTitleBar(true)
     }
 

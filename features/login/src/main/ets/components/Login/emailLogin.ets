@@ -118,6 +118,7 @@ export struct emailLogin {
   }
 
   signINByPassword() {
+    console.log('测试数据' + this.email + this.password)
     auth.signIn({
       //密码登录
       credentialInfo: {
@@ -127,32 +128,40 @@ export struct emailLogin {
       },
       autoCreateUser: false
     }).then(val => {
-      val.getUser().getPhone()
       AppStorage.setOrCreate('sign', 1)
       this.pageIndexInfos.clear()
     })
       .catch((err: BusinessError) => {
-        promptAction.showToast({ message: '账户或验证码错误！' })
-        console.log('测试' + err.code + err.message)
+        promptAction.showToast({
+          message: '账户或验证码' +
+            '错误！'
+        })
+        console.log('测试' + JSON.stringify(err))
       })
   }
 
   signInByVer() {
+    console.log('测试数据' + this.email + this.verCode)
     auth.signIn({
       //验证码登录
       credentialInfo: {
-        kind: 'phone',
-        phoneNumber: '111',
-        countryCode: '86',
-        verifyCode: '111'
+        kind: 'email',
+        email: this.email,
+        verifyCode: this.verCode
       },
       autoCreateUser: false
     }).then(val => {
-      val.getUser().getPhone()
+
       AppStorage.setOrCreate('sign', 1)
       this.pageIndexInfos.clear()
     })
       .catch((err: BusinessError) => {
+        auth.getCurrentUser().then(val => {
+          console.log('测试当前用户')
+          if (typeof val?.getUid() != null) {
+            this.pageIndexInfos.clear()
+          }
+        })
         promptAction.showToast({ message: '账户或验证码错误！' })
         console.log('测试' + err.code + err.message)
       })

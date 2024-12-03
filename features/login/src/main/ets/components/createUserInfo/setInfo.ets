@@ -1,11 +1,11 @@
-import { cloudStorage } from '@kit.CloudFoundationKit';
+import { cloudCommon, cloudStorage } from '@kit.CloudFoundationKit';
 import { BusinessError, request } from '@kit.BasicServicesKit';
 import { photoAccessHelper } from '@kit.MediaLibraryKit';
 import { fileIo as fs } from '@kit.CoreFileKit';
 import auth from "@hw-agconnect/auth"
 import { promptAction } from "@kit.ArkUI"
 import { cloudDatabase } from '@kit.CloudFoundationKit';
-import { UserInfo } from '../module/userInfo';
+import { userInfo } from '../../module/userInfo';
 
 
 @Component
@@ -15,7 +15,6 @@ export struct setInfo {
   @State avatar: string | Resource = $r('app.media.DefaultAvatar')
   //用户名
   @State name: string = ''
-  databaseZone = cloudDatabase.zone('QuickStartDemo');
   @StorageLink('musicListIDArr') musicListIDArr: string = ''
 
   build() {
@@ -116,6 +115,7 @@ export struct setInfo {
 
       Button('确认')
         .onClick(async () => {
+          this.upsert()
           this.createUserInfo()
         })
     }.size({ height: '100%', width: '100%' })
@@ -129,6 +129,9 @@ export struct setInfo {
         displayName: this.name,
         photoUrl: this.avatar
       })
+
+      //创建用户在云数据库内的信息
+      this.upsert()
       //跳转回主页
       this.pageIndexInfos.clear()
     } else if (typeof this.avatar === 'object') {
@@ -137,24 +140,32 @@ export struct setInfo {
       promptAction.showToast({ message: '请输入用法户名！' })
     }
 
-    //创建用户在云数据库内的信息
-    this.upsert()
 
   }
 
   async upsert() {
     try {
+      let authProvider = auth.getAuthProvider();
+      cloudCommon.init({
+        region: cloudCommon.CloudRegion.CHINA,
+        authProvider: authProvider,
+        functionOptions: { timeout: 10 * 1000 },
+        storageOptions: { mode: request.agent.Mode.BACKGROUND, network: request.agent.Network.ANY },
+        databaseOptions: { schema: "schema.json", traceId: "traceId" }
+      })
       let user = await auth.getCurrentUser()
       let UUID = user!.getUid()
-      let databaseZone = cloudDatabase.zone("userInfo");
-      let userInfo = new UserInfo()
-      userInfo.UUID = UUID
-      userInfo.musicListArr = this.musicListIDArr
-      userInfo.like = 0
-      userInfo.follower = 0
-      userInfo.level = 0
-      userInfo.regDuration = '0年'
-      let record = await databaseZone.upsert(userInfo);
+      let databaseZone = cloudDatabase.zone("user");
+      let UserInfo = new userInfo()
+      UserInfo.UUID = UUID
+      UserInfo.musicListArr = this.musicListIDArr
+      UserInfo.like = 0
+      UserInfo.follower = 0
+      UserInfo.level = 0
+      UserInfo.regDuration = '0年'
+      UserInfo.name = this.name
+      UserInfo.avatar = this.avatar as string
+      let record = await databaseZone.upsert(UserInfo);
       console.info(`Succeeded in upserting a book , result：` + JSON.stringify(record));
     } catch (err) {
       console.error(`Failed to upsert a book , Code: ${err.code}, message: ${err.message}`);

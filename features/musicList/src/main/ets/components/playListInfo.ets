@@ -14,10 +14,10 @@ export struct playListInfo {
         .fontWeight(FontWeight.Bolder)
         .fontColor('#ffff')
       Row({ space: 10 }) {
-        Image(this.playList.listCreator.userAvatar)
+        Image($r('app.media.avatar6'))
           .size({ width: 30, height: 30 })
           .borderRadius(30)
-        Text(this.playList.listCreator.userName)
+        Text('createUserName')
           .fontSize(18)
           .fontWeight(FontWeight.Regular)
           .fontColor('#ffff')

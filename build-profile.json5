@@ -86,6 +86,10 @@
     {
       "name": "login",
       "srcPath": "./features/login",
+    },
+    {
+      "name": "createMusicAndPlayList",
+      "srcPath": "./features/createMusicAndPlayList",
     }
   ]
 }

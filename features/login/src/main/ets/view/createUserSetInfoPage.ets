@@ -1,4 +1,4 @@
-import { setInfo } from "../components/setInfo"
+import { setInfo } from "../components/createUserInfo/setInfo"
 
 @Component
 export struct createUserSetInfoPage {

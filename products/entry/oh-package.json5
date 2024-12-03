@@ -15,7 +15,8 @@
     "musicplayer": "file:../../features/musicPlayer",
     "mediacommon": "file:../../common/mediaCommon",
     "@hw-agconnect/auth": "^1.0.1",
-    "login": "file:../../features/login"
+    "login": "file:../../features/login",
+    "createmusicandplaylist": "file:../../features/createMusicAndPlayList"
   }
 }
 

@@ -42,7 +42,7 @@ export struct regByEmail {
       Blank()
         .height(50)
 
-      //手机号
+      //邮箱
       TextInput({ placeholder: '请输入邮箱' })
         .onChange(val => {
           this.email = val
@@ -105,6 +105,7 @@ export struct regByEmail {
       promptAction.showToast({ message: '两次输入的密码不一致！', duration: 2000 })
       return
     }
+    console.log('测试' + this.email + this.verCode)
     auth.createUser({
       kind: 'email',
       email: this.email,
@@ -112,11 +113,19 @@ export struct regByEmail {
       verifyCode: this.verCode
     }).then(val => {
       AppStorage.setOrCreate('sign', 1)
-      this.pageIndexInfos.pushPathByName('createUserInfo',null)
+      this.pageIndexInfos.pushPathByName('createUserInfo', null)
       // 创建用户成功
     }).catch((error: BusinessError) => {
+
+
+      auth.getCurrentUser().then(val => {
+        if (typeof val?.getUid() != null) {
+          this.pageIndexInfos.pushPathByName('createUserInfo', null)
+        }
+      })
       // 创建用户失败
       promptAction.showToast({ message: '创建用户失败，请稍后再试' })
+      console.log('测试' + JSON.stringify(error))
     })
   }
 }
