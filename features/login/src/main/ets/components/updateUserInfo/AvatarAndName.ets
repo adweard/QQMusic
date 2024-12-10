@@ -140,10 +140,18 @@ export struct AvatarAndName {
       let user = await auth.getCurrentUser()
       let UUID = user!.getUid()
       let databaseZone = cloudDatabase.zone("user");
+      let condition = new cloudDatabase.DatabaseQuery(userInfo);
+      condition.equalTo('UUID', UUID);
+      let resultArray = await databaseZone.query(condition);
       let UserInfo = new userInfo()
       UserInfo.UUID = UUID
       UserInfo.name = this.newName
       UserInfo.avatar = this.avatar
+      UserInfo.like = resultArray[0].like
+      UserInfo.follower = resultArray[0].follower
+      UserInfo.level = resultArray[0].level
+      UserInfo.musicListArr = resultArray[0].musicListArr
+      UserInfo.regDuration = resultArray[0].regDuration
       let record = await databaseZone.upsert(UserInfo);
       console.info(`Succeeded in upserting a book , result：` + JSON.stringify(record));
     } catch (err) {

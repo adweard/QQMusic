@@ -15,7 +15,7 @@ export struct HeaderBottoms {
         .size({ width: 20 })
         .onClick(async () => {
           let storageBucket: cloudStorage.StorageBucket = cloudStorage.bucket();
-          const url = await storageBucket.getDownloadURL(`music/fushishanxia.mp3`)
+          const url = await storageBucket.getDownloadURL(`music/yintiankuaile.mp3`)
           console.log('默认头像下载地址' + url)
 
         })
@@ -23,7 +23,6 @@ export struct HeaderBottoms {
       //添加状态选项
       Text('+添加状态')
         .offset({ left: '5.5%' })
-
         .fontSize(14)
         .fontColor('#ffb8b8b8')
       Row({ space: 20 }) {
@@ -72,6 +71,66 @@ export struct HeaderBottoms {
         .onClick(() => {
           this.isShow = false
           this.pageIndexInfos.pushPathByName('bindPhone', null)
+        })
+
+      Divider()
+        .color('#cc676767')
+        .width('100%')
+
+      Text('绑定/改绑邮箱')
+        .fontSize(20)
+        .onClick(() => {
+          this.isShow = false
+          this.pageIndexInfos.pushPathByName('bindEmail', null)
+        })
+
+      Divider()
+        .color('#ff676767')
+        .width('100%')
+
+      Text('修改密码')
+        .fontSize(20)
+        .onClick(() => {
+        })
+
+      Divider()
+        .color('#ff676767')
+        .width('100%')
+
+      Text('退出登录')
+        .fontSize(20)
+        .fontColor('#ffff0000')
+        .onClick(() => {
+          auth.signOut()
+          AppStorage.setOrCreate('sign', 0)
+          this.isShow = false
+        })
+
+    }
+  }
+
+  @Builder
+  searchBuilder() {
+    Column({ space: 10 }) {
+      //占位
+      Blank()
+        .height(50)
+
+      Text('创建歌曲')
+        .fontSize(20)
+        .onClick(() => {
+          this.pageIndexInfos.pushPathByName('createMusic', null)
+        })
+
+      Divider()
+        .color('#ff676767')
+        .width('100%')
+
+      Text('创建歌单')
+        .fontSize(20)
+        .onClick(() => {
+          this.isShow = false
+          this.pageIndexInfos.pushPathByName('createPlayList', null)
         })
 
       Divider()

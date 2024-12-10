@@ -65,6 +65,7 @@ struct Index {
       NavDestination() {
         updateUserInfoPage()
       }.hideTitleBar(true)
+      
     } else if (name === 'bindEmail') {
       NavDestination() {
         bindEmailPage()
@@ -81,6 +82,7 @@ struct Index {
       NavDestination() {
         createPlayListPage()
       }.hideTitleBar(true)
+
     }
 
 
@@ -133,6 +135,7 @@ struct Index {
           TabContent() {
             MinePage()
           }.tabBar(this.tabBarBuilder('我的', 4, $r('app.media.mine_selected'), $r('app.media.mine_unselected')))
+
         }
         .margin({ bottom: Number(AppStorage.get('bottomHeight')) })
         .backgroundColor('#FCFDFF')

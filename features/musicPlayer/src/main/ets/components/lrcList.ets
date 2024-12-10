@@ -32,7 +32,7 @@ export struct lrcList {
             Text(val.lineWords)
               .fontColor(
                 (val.lineStartTime <= this.playTime && this.playTime <= val.lineStartTime + val.lineDuration) ?
-                  '#ffffffff' : '#ff7a7a7a')
+                  '#ff6bff00' : '#ffffffff')
               .fontSize((val.lineStartTime <= this.playTime && this.playTime <= val.lineStartTime + val.lineDuration) ?
                 25 : 20)
               .fontWeight((val.lineStartTime <= this.playTime &&

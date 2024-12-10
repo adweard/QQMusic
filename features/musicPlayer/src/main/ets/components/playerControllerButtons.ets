@@ -13,9 +13,20 @@ export struct playerControllerButton {
   @State playModeImg: Resource = $r('app.media.shunxubofang_player')
   @StorageLink('playList') playList: playListModel = AppStorage.get('playList') as playListModel
   @State isShow: boolean = false
+  interval: number = 0
 
   aboutToAppear(): void {
     this.playModeChange()
+    
+    //倒计时
+    this.interval = setInterval(() => {
+      if (this.player != null) {
+        //清除定时器
+        clearInterval(this.interval)
+        return
+      }
+      this.player = AppStorage.get('player') as media.AVPlayer
+    }, 1000)
   }
 
   build() {

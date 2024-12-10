@@ -3,10 +3,16 @@ import { HeaderBottoms } from "../components/HeaderBottoms";
 import { userInfoSignOut } from "../components/UserInfoSignOut";
 import { userInfoSign } from "../components/UserInfoSingin";
 
+@Entry
 @Component
 export struct MinePage {
-
   @StorageLink('sign') isSign: number = (AppStorage.get('sign') as number)
+
+  onPageShow(): void {
+    if (this.isSign == 1) {
+      userInfoSign().updateUserInfo()
+    }
+  }
 
   build() {
     Column() {
@@ -18,7 +24,6 @@ export struct MinePage {
       } else {
         userInfoSignOut()
       }
-
 
 
     }.size({ height: '100%', width: '100%' })

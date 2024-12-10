@@ -8,6 +8,7 @@ export struct playbackProgress {
   @State updateTime: string = '00:00'
   @State durationTime: string = '00:00'
   @StorageLink('seek') @Watch('onTimeChange') seek: number = 0
+  interval: number = 0
 
   aboutToAppear(): void {
     console.log('测试' + typeof (AppStorage.get("player")))
@@ -17,6 +18,17 @@ export struct playbackProgress {
     this.player.on('durationUpdate', (val) => {
       this.musicDuration = val
       this.durationTime = this.getTime(val)
+
+      //倒计时
+      this.interval = setInterval(() => {
+        if (this.player != null)
+        {
+          //清除定时器
+          clearInterval(this.interval)
+          return
+        }
+        this.player = AppStorage.get('player') as media.AVPlayer
+      }, 1000)
     })
 
 

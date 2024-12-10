@@ -5,7 +5,7 @@ import { BusinessError, request } from "@kit.BasicServicesKit"
 import { fileIo as fs } from '@kit.CoreFileKit';
 
 @Component
-export struct musicCoverAndName {
+export struct ListCoverAndName {
   @Consume cover: string
   @Consume name: string
 

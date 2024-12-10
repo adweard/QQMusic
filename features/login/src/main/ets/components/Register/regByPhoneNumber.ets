@@ -114,11 +114,16 @@ export struct regByPhoneNumber {
     }).then(val => {
       val.getUser().getPhone()
       AppStorage.setOrCreate('sign', 1)
-      this.pageIndexInfos.pushPathByName('createUserInfo',null)
+      this.pageIndexInfos.pushPathByName('createUserInfo', null)
       // 创建用户成功
     }).catch((error: BusinessError) => {
+      if (error.code == 401) {
+        this.pageIndexInfos.pushPathByName('createUserInfo', null)
+        return
+      }
       // 创建用户失败
       promptAction.showToast({ message: '创建用户失败，请稍后再试' })
+      console.log('注册失败' + error.code + error.message)
     })
   }
 }

@@ -14,12 +14,31 @@ export struct userInfoSign {
   //用户乐龄
   @State regDuration: string = '-'
   //用户关注数
-  @State like: number = 1
+  @State like: number = -1
   //用户粉丝数
   @State follower: number = 1
   //用户等级
   @State level: number = 6
   interval: number = 0;
+
+  async aboutToAppear(): Promise<void> {
+    let user = await auth.getCurrentUser()
+    this.userName = user!.getDisplayName()
+    this.avatar = user!.getPhotoUrl()
+
+    this.updateUserInfo()
+    this.interval = setInterval(() => {
+      if (this.regDuration != '-' && this.userName != '' && this.avatar != null && this.like != -1) {
+        //清除定时器
+        console.log('清除定时器')
+        clearInterval(this.interval)
+        return
+      }
+      this.updateUserInfo()
+      this.userName = user!.getDisplayName()
+      this.avatar = user!.getPhotoUrl()
+    }, 100)
+  }
 
   build() {
     Column({ space: 8 }) {
@@ -85,14 +104,15 @@ export struct userInfoSign {
 
     }.width('100%')
     .alignItems(HorizontalAlign.Center)
+
     .onAppear(async () => {
       let user = await auth.getCurrentUser()
       this.userName = user!.getDisplayName()
       this.avatar = user!.getPhotoUrl()
-      
+
       this.updateUserInfo()
       this.interval = setInterval(() => {
-        if (this.regDuration != '-' && this.userName != '' && this.avatar != null) {
+        if (this.regDuration != '-' && this.userName != '' && this.avatar != null && this.like != -1) {
           //清除定时器
           console.log('清除定时器')
           clearInterval(this.interval)

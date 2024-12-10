@@ -7,13 +7,30 @@ class LycModel {
   private lrcEntryList: LrcEntry[] = []
 
   getLycFile(songName: string): LrcEntry[] {
-    if (songName == 'fushishanxia.mp3') {
+    if (songName ==
+      'https://agc-storage-drcn.platform.dbankcloud.cn/v0/default-bucket-0ji5c/music%2Ffushishanxia.mp3?token=89cf5d82-0ee2-4187-a8bc-b1f06f85bd40') {
       //歌是富士山下
       let file = this.context.resourceManager.getRawFileContentSync('fushishanxia.lrc')
       this.lrcEntryList = this.getLrcList(file)
-    } else {
+    } else if (songName ==
+      'https://agc-storage-drcn.platform.dbankcloud.cn/v0/default-bucket-0ji5c/music%2Fhuanghun.mp3?token=8fc9354b-973a-4664-805a-b8c6135ff22b') {
       //歌是黄昏
       let file = this.context.resourceManager.getRawFileContentSync('huanghun.lrc')
+      this.lrcEntryList = this.getLrcList(file)
+    } else if (songName ==
+      'https://agc-storage-drcn.platform.dbankcloud.cn/v0/default-bucket-0ji5c/music%2Fqinghua.mp3?token=92b7005d-4776-434b-ab53-5771c2321243') {
+      //歌是青花
+      let file = this.context.resourceManager.getRawFileContentSync('qinghua.lrc')
+      this.lrcEntryList = this.getLrcList(file)
+    } else if (songName ==
+      'https://agc-storage-drcn.platform.dbankcloud.cn/v0/default-bucket-0ji5c/music%2Fyintiankuaile.mp3?token=34c52bbc-8ab5-4823-afa3-de744a0ec0cc') {
+      //歌是阴天快乐
+      let file = this.context.resourceManager.getRawFileContentSync('yintiankuaile.lrc')
+      this.lrcEntryList = this.getLrcList(file)
+    } else if (songName ==
+      'https://agc-storage-drcn.platform.dbankcloud.cn/v0/default-bucket-0ji5c/music%2Fshengdanjie.mp3?token=990c7971-bb6e-4ae2-9483-9332a32f93b1') {
+      //歌是圣诞结
+      let file = this.context.resourceManager.getRawFileContentSync('shengdanjie.lrc')
       this.lrcEntryList = this.getLrcList(file)
     }
     return this.lrcEntryList

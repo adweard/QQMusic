@@ -104,10 +104,10 @@ class MusicPlayer {
     const context = getContext()
 
     // 加载 src/main/resources/rawfile 文件夹中的文件
-    const fileDescriptor = await context.resourceManager.getRawFd(rawFdPath)
+    // const fileDescriptor = await context.resourceManager.getRawFd(rawFdPath)
     // TODO 设置播放路径
     // player.fdSrc = fileDescriptor
-    player.url = 'http://cdn5.lizhi.fm/audio/2020/09/01/2825532443597707782_hd.mp3'
+    player.url = rawFdPath
     // 播放
     player.play()
 
@@ -121,12 +121,13 @@ class MusicPlayer {
   // 加载 src/main/resources/rawfile 的文件
   async rePlayByRawSrc(): Promise<media.AVPlayer> {
     const reSeek = AppStorage.get('seek') as number
+    const playIndex = AppStorage.get('playIndex') as number
     const player = await this.getAVPlayerInstance()
     // 先释放原来的资源
     await player.reset()
-
+    let playList: playListModel = AppStorage.get('playList') as playListModel
     //TODO 设置播放路径
-    player.url = 'http://cdn5.lizhi.fm/audio/2014/12/24/16767947997917062_hd.mp3'
+    player.url = playList.musicList[playIndex].musicRawFile
     player.on('seekDone', val => {
       console.log('seekDone 跳转成功' + val)
     })
